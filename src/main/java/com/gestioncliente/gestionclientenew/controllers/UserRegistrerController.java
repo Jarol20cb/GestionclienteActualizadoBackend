@@ -1,4 +1,5 @@
 package com.gestioncliente.gestionclientenew.controllers;
+
 import com.gestioncliente.gestionclientenew.entities.Role;
 import com.gestioncliente.gestionclientenew.entities.Users;
 import com.gestioncliente.gestionclientenew.repositories.IRolRepository;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-
-
 //Controlador para insertar registro de usuario con sus roles, requiere del archivo RegistrationRequest
 //y una pequeña modificadión en la carpeta WebSecurityConfig
 
@@ -28,6 +27,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 public class UserRegistrerController {
+
     @Autowired
     private IUsersRepository userRepo;
 
@@ -50,6 +50,8 @@ public class UserRegistrerController {
             newUser.setUsername(registrationRequest.getUsername());
             newUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
             newUser.setEnabled(true);
+            newUser.setName(registrationRequest.getName()); // Nuevo campo
+            newUser.setCompanyName(registrationRequest.getCompanyName()); // Nuevo campo
 
             // Guardar usuario en la base de datos
             userRepo.save(newUser);
@@ -67,6 +69,4 @@ public class UserRegistrerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Error en el registro"));
         }
     }
-
-
 }

@@ -21,6 +21,12 @@ public class CustomerServiceController {
         CustomerService c = m.map(dto, CustomerService.class);
         a.insert(c);
     }
+    @PutMapping
+    public void Update(@RequestBody CustomerServiceDTO dto) {
+        ModelMapper m = new ModelMapper();
+        CustomerService c = m.map(dto, CustomerService.class);
+        a.insert(c);
+    }
 
     @GetMapping
     public List<CustomerServiceDTO> Listar() {
@@ -42,11 +48,6 @@ public class CustomerServiceController {
         return dto;
     }
 
-    @PutMapping
-    public void Update(@RequestBody CustomerServiceDTO dto) {
-        ModelMapper m = new ModelMapper();
-        CustomerService c = m.map(dto, CustomerService.class);
-        a.insert(c);
-    }
+
 
 }
