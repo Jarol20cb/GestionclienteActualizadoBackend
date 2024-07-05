@@ -57,7 +57,8 @@ public class WebSecurityConfig {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate", "/register").permitAll() // Permitir el acceso a la ruta de registro
+                .antMatchers("/authenticate", "/register").permitAll()
+                .antMatchers("/user/details").authenticated() // Asegurar que el endpoint esté protegido
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -67,6 +68,7 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
 
         return httpSecurity.build();
     }
