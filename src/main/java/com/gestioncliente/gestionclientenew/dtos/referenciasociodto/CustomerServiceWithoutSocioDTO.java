@@ -1,15 +1,13 @@
-package com.gestioncliente.gestionclientenew.dtos;
+package com.gestioncliente.gestionclientenew.dtos.referenciasociodto;
 
 import com.gestioncliente.gestionclientenew.entities.Services;
-import com.gestioncliente.gestionclientenew.entities.Socio;
 
 import java.util.Date;
 
-public class CustomerServiceDTO {
+public class CustomerServiceWithoutSocioDTO {
     private int idcs;
     private String name;
     private Services services;
-    private Socio socio; // Agregar propiedad socio
     private Date fechainicio;
     private Date fechafin;
     private String estado;
@@ -38,14 +36,6 @@ public class CustomerServiceDTO {
 
     public void setServices(Services services) {
         this.services = services;
-    }
-
-    public Socio getSocio() {
-        return socio;
-    }
-
-    public void setSocio(Socio socio) {
-        this.socio = socio;
     }
 
     public Date getFechainicio() {

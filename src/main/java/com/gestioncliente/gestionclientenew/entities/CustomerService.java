@@ -1,5 +1,7 @@
 package com.gestioncliente.gestionclientenew.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,6 +20,11 @@ public class CustomerService {
     @JoinColumn(name="serviceId", nullable=false)
     private Services services;
 
+    @ManyToOne
+    @JoinColumn(name="socioId", nullable=true)
+    @JsonBackReference
+    private Socio socio;
+
     @Column(name = "fechainicio", nullable = false)
     private Date fechainicio;
 
@@ -30,10 +37,11 @@ public class CustomerService {
     public CustomerService() {
     }
 
-    public CustomerService(int idcs, String name, Services services, Date fechainicio, Date fechafin, String estado) {
+    public CustomerService(int idcs, String name, Services services, Socio socio, Date fechainicio, Date fechafin, String estado) {
         this.idcs = idcs;
         this.name = name;
         this.services = services;
+        this.socio = socio;
         this.fechainicio = fechainicio;
         this.fechafin = fechafin;
         this.estado = estado;
@@ -61,6 +69,14 @@ public class CustomerService {
 
     public void setServices(Services services) {
         this.services = services;
+    }
+
+    public Socio getSocio() {
+        return socio;
+    }
+
+    public void setSocio(Socio socio) {
+        this.socio = socio;
     }
 
     public Date getFechainicio() {
