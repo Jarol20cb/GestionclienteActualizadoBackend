@@ -5,6 +5,7 @@ import java.util.List;
 public class SocioDTO {
     private int socioId;
     private String name;
+    private int clienteCount; // Nueva propiedad
     private List<CustomerServiceDTO> customerServices;
 
     public int getSocioId() {
@@ -21,6 +22,14 @@ public class SocioDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getClienteCount() {
+        return clienteCount;
+    }
+
+    public void setClienteCount(int clienteCount) {
+        this.clienteCount = clienteCount;
     }
 
     public List<CustomerServiceDTO> getCustomerServices() {

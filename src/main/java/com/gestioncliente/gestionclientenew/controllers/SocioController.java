@@ -30,9 +30,12 @@ public class SocioController {
     public List<SocioDTO> listar() {
         return socioService.list().stream().map(socio -> {
             ModelMapper modelMapper = new ModelMapper();
-            return modelMapper.map(socio, SocioDTO.class);
+            SocioDTO socioDTO = modelMapper.map(socio, SocioDTO.class);
+            socioDTO.setClienteCount(socio.getCustomerServices().size()); // Set clienteCount
+            return socioDTO;
         }).collect(Collectors.toList());
     }
+
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable("id") Integer id) {
@@ -41,9 +44,11 @@ public class SocioController {
 
     @GetMapping("/{id}")
     public SocioDTO listarId(@PathVariable("id") Integer id) {
+        Socio socio = socioService.listId(id);
         ModelMapper modelMapper = new ModelMapper();
-        SocioDTO dto = modelMapper.map(socioService.listId(id), SocioDTO.class);
-        return dto;
+        SocioDTO socioDTO = modelMapper.map(socio, SocioDTO.class);
+        socioDTO.setClienteCount(socio.getCustomerServices().size()); // Set clienteCount
+        return socioDTO;
     }
 
     @PutMapping
@@ -53,6 +58,7 @@ public class SocioController {
         socioService.insert(socio);
     }
 
+    //metodo para buscar los clientes de un socio en especifico
     @GetMapping("/{id}/customerservices")
     public SocioCustomerServiceDTO listarCustomerServicesPorSocio(@PathVariable("id") Integer id) {
         Socio socio = socioService.listId(id);
