@@ -35,4 +35,9 @@ public class PerfilServiceImplement implements PerfilService {
     public Perfil listId(int perfilId) {
         return pr.findById(perfilId).orElse(new Perfil());
     }
+
+    @Override
+    public List<Perfil> findByServiceAndAvailable(int serviceId) {
+        return pr.findByServiceAndAvailable(serviceId);
+    }
 }

@@ -20,16 +20,40 @@ public class CustomerServiceServiceImplement implements CustomerServiceService {
 
     @Override
     public void insert(CustomerService cuser) {
+        CustomerService existingCustomerService = cs.findById(cuser.getIdcs()).orElse(null);
         Perfil perfil = perfilRepository.findById(cuser.getPerfil().getPerfilId()).orElseThrow(() -> new RuntimeException("Perfil no encontrado"));
-        if (perfil.getUsuariosDisponibles() > 0) {
-            perfil.setUsuariosActuales(perfil.getUsuariosActuales() + 1);
-            perfil.setUsuariosDisponibles(perfil.getLimiteUsuarios() - perfil.getUsuariosActuales());
-            perfilRepository.save(perfil);
+
+        if (existingCustomerService != null) {
+            // Actualización de un registro existente
+            Perfil oldPerfil = existingCustomerService.getPerfil();
+            if (oldPerfil.getPerfilId() != perfil.getPerfilId()) {
+                // Si el perfil ha cambiado, ajustamos los contadores en ambos perfiles
+                oldPerfil.setUsuariosActuales(oldPerfil.getUsuariosActuales() - 1);
+                oldPerfil.setUsuariosDisponibles(oldPerfil.getLimiteUsuarios() - oldPerfil.getUsuariosActuales());
+                perfilRepository.save(oldPerfil);
+
+                if (perfil.getUsuariosDisponibles() > 0) {
+                    perfil.setUsuariosActuales(perfil.getUsuariosActuales() + 1);
+                    perfil.setUsuariosDisponibles(perfil.getLimiteUsuarios() - perfil.getUsuariosActuales());
+                    perfilRepository.save(perfil);
+                } else {
+                    throw new RuntimeException("Límite de usuarios alcanzado para este perfil");
+                }
+            }
             cs.save(cuser);
         } else {
-            throw new RuntimeException("Límite de usuarios alcanzado para este perfil");
+            // Nuevo registro
+            if (perfil.getUsuariosDisponibles() > 0) {
+                perfil.setUsuariosActuales(perfil.getUsuariosActuales() + 1);
+                perfil.setUsuariosDisponibles(perfil.getLimiteUsuarios() - perfil.getUsuariosActuales());
+                perfilRepository.save(perfil);
+                cs.save(cuser);
+            } else {
+                throw new RuntimeException("Límite de usuarios alcanzado para este perfil");
+            }
         }
     }
+
 
     @Override
     public void delete(int idcs) {

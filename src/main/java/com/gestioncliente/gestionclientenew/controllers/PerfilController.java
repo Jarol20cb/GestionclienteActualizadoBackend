@@ -49,4 +49,9 @@ public class PerfilController {
         Perfil p = m.map(dto, Perfil.class);
         perfilService.insert(p);
     }
+
+    @GetMapping("/available/{serviceId}")
+    public List<Perfil> getAvailablePerfiles(@PathVariable int serviceId) {
+        return perfilService.findByServiceAndAvailable(serviceId);
+    }
 }

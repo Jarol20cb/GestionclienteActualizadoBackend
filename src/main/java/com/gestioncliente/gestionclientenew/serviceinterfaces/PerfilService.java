@@ -9,4 +9,5 @@ public interface PerfilService {
     public List<Perfil> list();
     public void delete(int perfilId);
     public Perfil listId(int perfilId);
+    List<Perfil> findByServiceAndAvailable(int serviceId);
 }
