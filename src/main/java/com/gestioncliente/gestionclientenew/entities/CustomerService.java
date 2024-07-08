@@ -25,6 +25,10 @@ public class CustomerService {
     @JsonBackReference
     private Socio socio;
 
+    @ManyToOne
+    @JoinColumn(name="perfilId", nullable=false)
+    private Perfil perfil;
+
     @Column(name = "fechainicio", nullable = false)
     private Date fechainicio;
 
@@ -37,11 +41,12 @@ public class CustomerService {
     public CustomerService() {
     }
 
-    public CustomerService(int idcs, String name, Services services, Socio socio, Date fechainicio, Date fechafin, String estado) {
+    public CustomerService(int idcs, String name, Services services, Socio socio, Perfil perfil, Date fechainicio, Date fechafin, String estado) {
         this.idcs = idcs;
         this.name = name;
         this.services = services;
         this.socio = socio;
+        this.perfil = perfil;
         this.fechainicio = fechainicio;
         this.fechafin = fechafin;
         this.estado = estado;
@@ -77,6 +82,14 @@ public class CustomerService {
 
     public void setSocio(Socio socio) {
         this.socio = socio;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
     }
 
     public Date getFechainicio() {

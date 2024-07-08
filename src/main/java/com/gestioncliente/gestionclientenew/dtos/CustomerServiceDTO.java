@@ -1,6 +1,7 @@
 package com.gestioncliente.gestionclientenew.dtos;
 
 import com.gestioncliente.gestionclientenew.entities.Services;
+import com.gestioncliente.gestionclientenew.entities.Perfil;
 import com.gestioncliente.gestionclientenew.entities.Socio;
 
 import java.util.Date;
@@ -9,7 +10,8 @@ public class CustomerServiceDTO {
     private int idcs;
     private String name;
     private Services services;
-    private Socio socio; // Agregar propiedad socio
+    private Perfil perfil;
+    private Socio socio; // Agregar campo socio
     private Date fechainicio;
     private Date fechafin;
     private String estado;
@@ -38,6 +40,14 @@ public class CustomerServiceDTO {
 
     public void setServices(Services services) {
         this.services = services;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
     }
 
     public Socio getSocio() {
