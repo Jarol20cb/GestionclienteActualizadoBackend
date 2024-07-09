@@ -10,4 +10,5 @@ public interface PerfilService {
     public void delete(int perfilId);
     public Perfil listId(int perfilId);
     List<Perfil> findByServiceAndAvailable(int serviceId);
+    List<Perfil> findByServiceId(int serviceId);
 }

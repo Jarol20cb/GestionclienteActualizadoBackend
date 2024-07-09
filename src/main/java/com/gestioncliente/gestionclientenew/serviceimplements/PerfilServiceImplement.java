@@ -40,4 +40,8 @@ public class PerfilServiceImplement implements PerfilService {
     public List<Perfil> findByServiceAndAvailable(int serviceId) {
         return pr.findByServiceAndAvailable(serviceId);
     }
+    @Override
+    public List<Perfil> findByServiceId(int serviceId) {
+        return pr.findByServiceId(serviceId);
+    }
 }
