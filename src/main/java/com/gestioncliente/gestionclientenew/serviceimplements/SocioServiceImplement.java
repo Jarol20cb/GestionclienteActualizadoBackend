@@ -32,4 +32,9 @@ public class SocioServiceImplement implements SocioService {
     public Socio listId(int id) {
         return socioRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<Socio> findByUsername(String username) {
+        return socioRepository.findByUsername(username);
+    }
 }

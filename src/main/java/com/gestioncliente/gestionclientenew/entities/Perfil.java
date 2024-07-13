@@ -39,11 +39,14 @@ public class Perfil {
     @Column(name = "usuariosDisponibles", nullable = false)
     private int usuariosDisponibles;
 
+    @Column(name = "username", nullable = false, length = 30)
+    private String username;
+
     public Perfil() {
         this.usuariosDisponibles = this.limiteUsuarios - this.usuariosActuales;
     }
 
-    public Perfil(int perfilId, Services service, Proveedor proveedor, String correo, String contrasena, Date fechainicio, Date fechafin, int limiteUsuarios, int usuariosActuales, int usuariosDisponibles) {
+    public Perfil(int perfilId, Services service, Proveedor proveedor, String correo, String contrasena, Date fechainicio, Date fechafin, int limiteUsuarios, int usuariosActuales, int usuariosDisponibles, String username) {
         this.perfilId = perfilId;
         this.service = service;
         this.proveedor = proveedor;
@@ -54,6 +57,7 @@ public class Perfil {
         this.limiteUsuarios = limiteUsuarios;
         this.usuariosActuales = usuariosActuales;
         this.usuariosDisponibles = limiteUsuarios - usuariosActuales;
+        this.username = username;
     }
 
     // Getters y Setters
@@ -137,5 +141,13 @@ public class Perfil {
 
     public void setUsuariosDisponibles(int usuariosDisponibles) {
         this.usuariosDisponibles = usuariosDisponibles;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

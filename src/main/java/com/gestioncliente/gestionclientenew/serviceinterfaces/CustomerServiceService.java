@@ -5,8 +5,9 @@ import com.gestioncliente.gestionclientenew.entities.CustomerService;
 import java.util.List;
 
 public interface CustomerServiceService {
-    public void insert(CustomerService cuser);
-    public List<CustomerService> list();
-    public void delete(int idcs);
-    public CustomerService listId(int idcs);
+    void insert(CustomerService cuser);
+    List<CustomerService> list();
+    void delete(int idcs);
+    CustomerService listId(int idcs);
+    List<CustomerService> findByUsername(String username);
 }

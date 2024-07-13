@@ -9,4 +9,5 @@ public interface SocioService {
     List<Socio> list();
     void delete(int id);
     Socio listId(int id);
+    List<Socio> findByUsername(String username);
 }

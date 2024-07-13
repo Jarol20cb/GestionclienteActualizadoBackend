@@ -12,15 +12,19 @@ public class Proveedor {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
+    @Column(name = "username", nullable = false, length = 30)
+    private String username;
+
     // Otros campos relevantes
     // Getters y setters
 
     public Proveedor() {
     }
 
-    public Proveedor(int proveedorId, String nombre) {
+    public Proveedor(int proveedorId, String nombre, String username) {
         this.proveedorId = proveedorId;
         this.nombre = nombre;
+        this.username = username;
     }
 
     public int getProveedorId() {
@@ -37,5 +41,13 @@ public class Proveedor {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

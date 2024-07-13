@@ -13,6 +13,7 @@ public class PerfilServiceImplement implements PerfilService {
     @Autowired
     private PerfilRepository pr;
 
+    @Override
     public void insert(Perfil perfil) {
         if (perfil.getPerfilId() == 0) { // Verificar si es un nuevo perfil
             perfil.setUsuariosActuales(0);
@@ -40,8 +41,14 @@ public class PerfilServiceImplement implements PerfilService {
     public List<Perfil> findByServiceAndAvailable(int serviceId) {
         return pr.findByServiceAndAvailable(serviceId);
     }
+
     @Override
     public List<Perfil> findByServiceId(int serviceId) {
         return pr.findByServiceId(serviceId);
+    }
+
+    @Override
+    public List<Perfil> findByUsername(String username) {
+        return pr.findByUsername(username);
     }
 }

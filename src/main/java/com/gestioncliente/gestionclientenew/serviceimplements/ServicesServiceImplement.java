@@ -1,4 +1,5 @@
 package com.gestioncliente.gestionclientenew.serviceimplements;
+
 import com.gestioncliente.gestionclientenew.entities.Services;
 import com.gestioncliente.gestionclientenew.repositories.ServicesRepository;
 import com.gestioncliente.gestionclientenew.serviceinterfaces.ServicesService;
@@ -30,5 +31,10 @@ public class ServicesServiceImplement implements ServicesService {
     @Override
     public Services listId(int serviceId) {
         return s.findById(serviceId).orElse(new Services());
+    }
+
+    @Override
+    public List<Services> findByUsername(String username) {
+        return s.findByUsername(username);
     }
 }

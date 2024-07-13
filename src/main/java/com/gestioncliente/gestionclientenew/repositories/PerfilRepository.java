@@ -13,7 +13,9 @@ public interface PerfilRepository extends JpaRepository<Perfil, Integer> {
     @Query("SELECT p FROM Perfil p WHERE p.service.serviceId = :serviceId AND p.usuariosDisponibles > 0")
     List<Perfil> findByServiceAndAvailable(int serviceId);
 
-    //se agrego el query para buscar los perfiles de un servicio
     @Query("SELECT p FROM Perfil p WHERE p.service.serviceId = :serviceId")
     List<Perfil> findByServiceId(@Param("serviceId") int serviceId);
+
+    @Query("SELECT p FROM Perfil p WHERE p.username = :username")
+    List<Perfil> findByUsername(@Param("username") String username);
 }

@@ -32,4 +32,9 @@ public class ProveedorServiceImplement implements ProveedorService {
     public Proveedor listId(int proveedorId) {
         return pr.findById(proveedorId).orElse(new Proveedor());
     }
+
+    @Override
+    public List<Proveedor> findByUsername(String username) {
+        return pr.findByUsername(username);
+    }
 }

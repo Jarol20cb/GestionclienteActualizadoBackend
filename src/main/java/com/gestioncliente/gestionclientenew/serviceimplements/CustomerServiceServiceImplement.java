@@ -54,7 +54,6 @@ public class CustomerServiceServiceImplement implements CustomerServiceService {
         }
     }
 
-
     @Override
     public void delete(int idcs) {
         CustomerService customerService = cs.findById(idcs).orElse(null);
@@ -77,5 +76,10 @@ public class CustomerServiceServiceImplement implements CustomerServiceService {
     @Override
     public CustomerService listId(int idcs) {
         return cs.findById(idcs).orElse(new CustomerService());
+    }
+
+    @Override
+    public List<CustomerService> findByUsername(String username) {
+        return cs.findByUsername(username);
     }
 }

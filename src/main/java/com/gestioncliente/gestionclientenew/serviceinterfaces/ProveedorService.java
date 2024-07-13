@@ -5,8 +5,9 @@ import com.gestioncliente.gestionclientenew.entities.Proveedor;
 import java.util.List;
 
 public interface ProveedorService {
-    public void insert(Proveedor proveedor);
-    public List<Proveedor> list();
-    public void delete(int proveedorId);
-    public Proveedor listId(int proveedorId);
+    void insert(Proveedor proveedor);
+    List<Proveedor> list();
+    void delete(int proveedorId);
+    Proveedor listId(int proveedorId);
+    List<Proveedor> findByUsername(String username);
 }

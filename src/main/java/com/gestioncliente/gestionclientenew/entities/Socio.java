@@ -15,6 +15,9 @@ public class Socio {
     @Column(name = "name", nullable = false, length = 40)
     private String name;
 
+    @Column(name = "username", nullable = false, length = 30)
+    private String username;
+
     @OneToMany(mappedBy = "socio")
     @JsonManagedReference
     private List<CustomerService> customerServices;
@@ -35,6 +38,14 @@ public class Socio {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public List<CustomerService> getCustomerServices() {
