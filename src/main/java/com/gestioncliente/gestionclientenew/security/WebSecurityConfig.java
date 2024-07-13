@@ -58,7 +58,8 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/authenticate", "/register").permitAll()
-                .antMatchers("/user/details").authenticated() // Asegurar que el endpoint esté protegido
+                .antMatchers("/user/details").authenticated()
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -69,7 +70,7 @@ public class WebSecurityConfig {
 
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-
         return httpSecurity.build();
     }
+
 }
