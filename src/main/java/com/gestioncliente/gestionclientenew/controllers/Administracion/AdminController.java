@@ -38,7 +38,7 @@ public class AdminController {
         }
         user.setEnabled(true);
         userRepo.save(user);
-        return ResponseEntity.ok("User enabled successfully");
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping("/users/{id}/disable")
@@ -49,7 +49,7 @@ public class AdminController {
         }
         user.setEnabled(false);
         userRepo.save(user);
-        return ResponseEntity.ok("User disabled successfully");
+        return ResponseEntity.ok(user);
     }
 
     @Transactional
@@ -60,11 +60,7 @@ public class AdminController {
             return ResponseEntity.status(404).body("Usuario no existe");
         }
 
-        try {
-            userRepo.delete(user);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error deleting user: " + e.getMessage());
-        }
+        userRepo.delete(user);
 
         return ResponseEntity.ok("User deleted successfully");
     }
@@ -79,6 +75,6 @@ public class AdminController {
         user.setName(updatedUser.getName());
         user.setCompanyName(updatedUser.getCompanyName());
         userRepo.save(user);
-        return ResponseEntity.ok("User updated successfully");
+        return ResponseEntity.ok(user);
     }
 }
