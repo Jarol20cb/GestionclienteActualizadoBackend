@@ -15,8 +15,7 @@ public class CustomerServiceDTO {
     private Date fechainicio;
     private Date fechafin;
     private String estado;
-
-    // Getters y Setters
+    private String numerocelular;
 
     public int getIdcs() {
         return idcs;
@@ -80,5 +79,13 @@ public class CustomerServiceDTO {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getNumerocelular() {
+        return numerocelular;
+    }
+
+    public void setNumerocelular(String numerocelular) {
+        this.numerocelular = numerocelular;
     }
 }

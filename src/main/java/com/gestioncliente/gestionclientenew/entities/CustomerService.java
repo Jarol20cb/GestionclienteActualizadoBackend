@@ -41,10 +41,13 @@ public class CustomerService {
     @Column(name = "username", nullable = false, length = 30)
     private String username;
 
+    @Column(name = "numerocelular", length = 15)
+    private String numerocelular;
+
     public CustomerService() {
     }
 
-    public CustomerService(int idcs, String name, Services services, Socio socio, Perfil perfil, Date fechainicio, Date fechafin, String estado, String username) {
+    public CustomerService(int idcs, String name, Services services, Socio socio, Perfil perfil, Date fechainicio, Date fechafin, String estado, String username, String numerocelular) {
         this.idcs = idcs;
         this.name = name;
         this.services = services;
@@ -54,6 +57,7 @@ public class CustomerService {
         this.fechafin = fechafin;
         this.estado = estado;
         this.username = username;
+        this.numerocelular = numerocelular;
     }
 
     public int getIdcs() {
@@ -126,6 +130,14 @@ public class CustomerService {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getNumerocelular() {
+        return numerocelular;
+    }
+
+    public void setNumerocelular(String numerocelular) {
+        this.numerocelular = numerocelular;
     }
 
     private Date calculateFechafin(Date fechainicio) {
