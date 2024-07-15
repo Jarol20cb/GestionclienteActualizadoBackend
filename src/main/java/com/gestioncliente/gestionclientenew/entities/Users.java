@@ -1,5 +1,7 @@
 package com.gestioncliente.gestionclientenew.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -26,6 +28,10 @@ public class Users {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Role> roles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Notification> notifications;
 
     // Getters y Setters
     public Long getId() {
@@ -84,6 +90,17 @@ public class Users {
         this.roles = roles;
         for (Role role : roles) {
             role.setUser(this);
+        }
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+        for (Notification notification : notifications) {
+            notification.setUser(this);
         }
     }
 }

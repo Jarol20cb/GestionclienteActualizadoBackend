@@ -60,6 +60,7 @@ public class WebSecurityConfig {
                 .antMatchers("/authenticate", "/register").permitAll()
                 .antMatchers("/user/details").authenticated()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/notifications/**").authenticated() // Permitir acceso autenticado a notificaciones
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -72,5 +73,6 @@ public class WebSecurityConfig {
 
         return httpSecurity.build();
     }
+
 
 }

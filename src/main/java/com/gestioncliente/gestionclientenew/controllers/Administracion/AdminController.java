@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,6 +37,9 @@ public class AdminController {
     private IRolRepository rolRepository;
     @Autowired
     private PasswordService passwordService;
+    @Autowired
+    private NotificationRepository notificationRepository;
+
 
     @GetMapping("/users")
     public List<Users> getAllUsers() {
@@ -147,4 +152,45 @@ public class AdminController {
         return ResponseEntity.ok(refreshedUser);
     }
 
+
+    @PostMapping("/notifications/send")
+    public ResponseEntity<?> sendNotifications(@RequestBody NotificationRequest notificationRequest) {
+        for (Long userId : notificationRequest.getUserIds()) {
+            Users user = userRepo.findById(userId).orElse(null);
+            if (user != null) {
+                Notification notification = new Notification();
+                notification.setMessage(notificationRequest.getMessage());
+                notification.setUser(user);
+                notification.setRead(false);
+                notificationRepository.save(notification);
+            }
+        }
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Notificaciones enviadas");
+        return ResponseEntity.ok(response);
+    }
+
+
+}
+
+class NotificationRequest {
+    private String message;
+    private List<Long> userIds;
+
+    // Getters y Setters
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public List<Long> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<Long> userIds) {
+        this.userIds = userIds;
+    }
 }
