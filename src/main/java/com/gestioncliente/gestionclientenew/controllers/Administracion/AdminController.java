@@ -170,27 +170,28 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/notifications/sendToAll")
+    public ResponseEntity<?> sendNotificationsToAll(@RequestBody Map<String, String> request) {
+        String message = request.get("message");
+        if (message == null || message.isEmpty()) {
+            return ResponseEntity.status(400).body("El mensaje no puede estar vacío");
+        }
+
+        List<Users> users = userRepo.findAll();
+        for (Users user : users) {
+            Notification notification = new Notification();
+            notification.setMessage(message);
+            notification.setUser(user);
+            notification.setRead(false);
+            notificationRepository.save(notification);
+        }
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Notificaciones enviadas a todos los usuarios");
+        return ResponseEntity.ok(response);
+    }
+
+
 
 }
 
-class NotificationRequest {
-    private String message;
-    private List<Long> userIds;
-
-    // Getters y Setters
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public List<Long> getUserIds() {
-        return userIds;
-    }
-
-    public void setUserIds(List<Long> userIds) {
-        this.userIds = userIds;
-    }
-}
