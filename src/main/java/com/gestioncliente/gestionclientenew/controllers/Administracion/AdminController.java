@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admin")
@@ -191,7 +189,37 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/notifications")
+    public ResponseEntity<?> getAllNotifications() {
+        List<Notification> notifications = notificationRepository.findAll();
+        notifications.forEach(notification -> notification.getUser().getUsername()); // Cargar el nombre de usuario
+        return ResponseEntity.ok(notifications);
+    }
 
+    @GetMapping("/users/{id}/notifications")
+    public ResponseEntity<?> getNotificationsByUserId(@PathVariable Long id) {
+        Users user = userRepo.findById(id).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(404).body("Usuario no existe");
+        }
+        List<Notification> notifications = notificationRepository.findByUserId(id);
+        return ResponseEntity.ok(notifications);
+    }
 
+    @DeleteMapping("/notifications/{id}")
+    public ResponseEntity<?> deleteNotification(@PathVariable Long id) {
+        Notification notification = notificationRepository.findById(id).orElse(null);
+        if (notification == null) {
+            return ResponseEntity.status(404).body("Notificación no existe");
+        }
+        notificationRepository.delete(notification);
+        return ResponseEntity.ok("Notificación eliminada correctamente");
+    }
+
+    @DeleteMapping("/notifications")
+    public ResponseEntity<?> deleteAllNotifications() {
+        notificationRepository.deleteAll();
+        return ResponseEntity.ok("Todas las notificaciones han sido eliminadas");
+    }
 }
 

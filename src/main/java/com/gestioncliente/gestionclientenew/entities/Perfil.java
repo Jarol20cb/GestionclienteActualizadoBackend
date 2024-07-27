@@ -15,7 +15,7 @@ public class Perfil {
     private Services service;
 
     @ManyToOne
-    @JoinColumn(name = "proveedorId", nullable = false)
+    @JoinColumn(name = "proveedorId", nullable = true)
     private Proveedor proveedor;
 
     @Column(name = "correo", nullable = false)

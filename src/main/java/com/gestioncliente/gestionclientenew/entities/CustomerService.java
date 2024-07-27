@@ -23,7 +23,7 @@ public class CustomerService {
     @ManyToOne
     @JoinColumn(name="socioId", nullable=true)
     @JsonBackReference
-    private Socio socio;
+    private Socio socio; // Cambiado a opcional
 
     @ManyToOne
     @JoinColumn(name="perfilId", nullable=false)
@@ -41,8 +41,8 @@ public class CustomerService {
     @Column(name = "username", nullable = false, length = 30)
     private String username;
 
-    @Column(name = "numerocelular", length = 15)
-    private String numerocelular;
+    @Column(name = "numerocelular", length = 15, nullable = true)
+    private String numerocelular; // Cambiado a opcional
 
     public CustomerService() {
     }
