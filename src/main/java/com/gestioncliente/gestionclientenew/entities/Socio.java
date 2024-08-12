@@ -15,7 +15,7 @@ public class Socio {
     @Column(name = "name", nullable = false, length = 40)
     private String name;
 
-    @Column(name = "username", nullable = false, length = 30)
+    @Column(name = "username", nullable = false)
     private String username;
 
     @OneToMany(mappedBy = "socio")

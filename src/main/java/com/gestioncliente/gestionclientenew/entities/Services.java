@@ -15,7 +15,7 @@ public class Services {
     @Column(name = "description", nullable = false, length = 150)
     private String description;
 
-    @Column(name = "username", nullable = false, length = 30)
+    @Column(name = "username", nullable = false)
     private String username;
 
     public Services() {

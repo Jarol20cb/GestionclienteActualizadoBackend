@@ -39,7 +39,7 @@ public class Perfil {
     @Column(name = "usuariosDisponibles", nullable = false)
     private int usuariosDisponibles;
 
-    @Column(name = "username", nullable = false, length = 30)
+    @Column(name = "username", nullable = false)
     private String username;
 
     public Perfil() {

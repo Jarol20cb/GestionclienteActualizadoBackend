@@ -12,7 +12,7 @@ public class Proveedor {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Column(name = "username", nullable = false, length = 30)
+    @Column(name = "username", nullable = false)
     private String username;
 
     // Otros campos relevantes

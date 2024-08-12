@@ -38,7 +38,7 @@ public class CustomerService {
     @Column(name = "estado", nullable = false, length = 20)
     private String estado;
 
-    @Column(name = "username", nullable = false, length = 30)
+    @Column(name = "username", nullable = false)
     private String username;
 
     @Column(name = "numerocelular", length = 15, nullable = true)
