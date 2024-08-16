@@ -1,5 +1,6 @@
 package com.gestioncliente.gestionclientenew.dtos;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class UserWithoutPasswordDTO {
@@ -8,6 +9,12 @@ public class UserWithoutPasswordDTO {
     private Boolean enabled;
     private String name;
     private String companyName;
+    private String accountType;
+    private String accountStatus;  // Nuevo campo agregado
+    private LocalDateTime registrationDate;
+    private LocalDateTime premiumStartDate;
+    private LocalDateTime lastPaymentDate;
+    private Long timeUntilNextPayment;
     private List<String> roles;
 
     // Getters y Setters
@@ -49,6 +56,54 @@ public class UserWithoutPasswordDTO {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
+    public String getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDateTime registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public LocalDateTime getPremiumStartDate() {
+        return premiumStartDate;
+    }
+
+    public void setPremiumStartDate(LocalDateTime premiumStartDate) {
+        this.premiumStartDate = premiumStartDate;
+    }
+
+    public LocalDateTime getLastPaymentDate() {
+        return lastPaymentDate;
+    }
+
+    public void setLastPaymentDate(LocalDateTime lastPaymentDate) {
+        this.lastPaymentDate = lastPaymentDate;
+    }
+
+    public Long getTimeUntilNextPayment() {
+        return timeUntilNextPayment;
+    }
+
+    public void setTimeUntilNextPayment(Long timeUntilNextPayment) {
+        this.timeUntilNextPayment = timeUntilNextPayment;
     }
 
     public List<String> getRoles() {

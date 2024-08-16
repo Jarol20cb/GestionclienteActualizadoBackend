@@ -1,8 +1,10 @@
 package com.gestioncliente.gestionclientenew.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.gestioncliente.gestionclientenew.entities.TipoCuenta.AccountType;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -12,26 +14,49 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 30, unique = true)
-    private String username;
+    @Column(length = 30, unique = true, nullable = false)
+    private String username;  // Nombre de usuario único
 
-    @Column(length = 200)
-    private String password;
+    @Column(length = 200, nullable = false)
+    private String password;  // Contraseña cifrada del usuario
 
-    private Boolean enabled;
+    private Boolean enabled;  // Estado de habilitación de la cuenta (activo/inactivo)
 
     @Column(length = 50, nullable = false)
-    private String name;
+    private String name;  // Nombre completo del usuario
 
     @Column(length = 100, nullable = false)
-    private String companyName;
+    private String companyName;  // Nombre de la empresa asociada al usuario
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;  // Fecha y hora de creación de la cuenta
+
+    @Column(nullable = false)
+    private LocalDateTime subscriptionStartDate;  // Fecha de inicio de la suscripción (free o premium)
+
+    @Column(nullable = false)
+    private LocalDateTime subscriptionEndDate;  // Fecha de expiración de la suscripción
+
+    @Column(nullable = true)
+    private LocalDateTime lastPaymentDate;  // Fecha del último pago realizado (solo para usuarios premium)
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10, nullable = false)
+    private AccountType accountType;  // Tipo de cuenta: "FREE" o "PREMIUM"
+
+    @Column(nullable = false)
+    private Boolean isPremium;  // Indica si la cuenta es premium (true/false)
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Role> roles;
+    private List<Role> roles;  // Lista de roles asociados al usuario (e.g., ADMIN, USER)
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Notification> notifications;
+    private List<Notification> notifications;  // Notificaciones asociadas al usuario
+
+    // Constructor vacío
+    public Users() {
+    }
 
     // Getters y Setters
     public Long getId() {
@@ -80,6 +105,54 @@ public class Users {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getSubscriptionStartDate() {
+        return subscriptionStartDate;
+    }
+
+    public void setSubscriptionStartDate(LocalDateTime subscriptionStartDate) {
+        this.subscriptionStartDate = subscriptionStartDate;
+    }
+
+    public LocalDateTime getSubscriptionEndDate() {
+        return subscriptionEndDate;
+    }
+
+    public void setSubscriptionEndDate(LocalDateTime subscriptionEndDate) {
+        this.subscriptionEndDate = subscriptionEndDate;
+    }
+
+    public LocalDateTime getLastPaymentDate() {
+        return lastPaymentDate;
+    }
+
+    public void setLastPaymentDate(LocalDateTime lastPaymentDate) {
+        this.lastPaymentDate = lastPaymentDate;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public Boolean getIsPremium() {
+        return isPremium;
+    }
+
+    public void setIsPremium(Boolean isPremium) {
+        this.isPremium = isPremium;
     }
 
     public List<Role> getRoles() {

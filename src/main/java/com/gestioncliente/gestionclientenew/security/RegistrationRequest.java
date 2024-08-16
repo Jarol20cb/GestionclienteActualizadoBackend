@@ -1,12 +1,16 @@
 package com.gestioncliente.gestionclientenew.security;
 
+import com.gestioncliente.gestionclientenew.entities.TipoCuenta.AccountType;
+
 import java.util.List;
 
 public class RegistrationRequest extends JwtRequest {
     private List<String> roles;
-    private String name; // Nuevo campo
-    private String companyName; // Nuevo campo
+    private String name;
+    private String companyName;
+    private AccountType accountType;  // Tipo de cuenta seleccionado por el usuario
 
+    // Getters y Setters
     public List<String> getRoles() {
         return roles;
     }
@@ -29,5 +33,13 @@ public class RegistrationRequest extends JwtRequest {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 }

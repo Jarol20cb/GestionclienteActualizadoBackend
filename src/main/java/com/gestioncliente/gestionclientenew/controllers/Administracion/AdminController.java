@@ -2,12 +2,14 @@ package com.gestioncliente.gestionclientenew.controllers.Administracion;
 
 import com.gestioncliente.gestionclientenew.entities.*;
 import com.gestioncliente.gestionclientenew.repositories.*;
+import com.gestioncliente.gestionclientenew.serviceimplements.JwtUserDetailsService;
 import com.gestioncliente.gestionclientenew.serviceimplements.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,11 +35,15 @@ public class AdminController {
 
     @Autowired
     private IRolRepository rolRepository;
+
     @Autowired
     private PasswordService passwordService;
+
     @Autowired
     private NotificationRepository notificationRepository;
 
+    @Autowired
+    private JwtUserDetailsService userDetailsService;
 
     @GetMapping("/users")
     public List<Users> getAllUsers() {
@@ -150,7 +156,6 @@ public class AdminController {
         return ResponseEntity.ok(refreshedUser);
     }
 
-
     @PostMapping("/notifications/send")
     public ResponseEntity<?> sendNotifications(@RequestBody NotificationRequest notificationRequest) {
         for (Long userId : notificationRequest.getUserIds()) {
@@ -222,4 +227,3 @@ public class AdminController {
         return ResponseEntity.ok("Todas las notificaciones han sido eliminadas");
     }
 }
-

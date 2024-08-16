@@ -10,16 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface IUsersRepository extends JpaRepository<Users, Long> {
-    public Users findByUsername(String username);
 
-    //BUSCAR POR NOMBRE
+    Users findByUsername(String username);
+
     @Query("select count(u.username) from Users u where u.username =:username")
-    public int buscarUsername(@Param("username") String nombre);
+    int buscarUsername(@Param("username") String nombre);
 
-
-    //INSERTAR ROLES
     @Transactional
     @Modifying
     @Query(value = "insert into roles (rol, user_id) VALUES (:rol, :user_id)", nativeQuery = true)
-    public void insRol(@Param("rol") String authority, @Param("user_id") Long user_id);
+    void insRol(@Param("rol") String authority, @Param("user_id") Long user_id);
 }
