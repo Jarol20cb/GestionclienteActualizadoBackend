@@ -19,8 +19,8 @@ public class Message {
     @Column(length = 100, nullable = false)
     private String title;
 
-    @Column(nullable = true)
-    private byte[] fileData;  // Datos binarios del comprobante
+    @Column(columnDefinition="TEXT", nullable = true)
+    private String fileData;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -28,7 +28,6 @@ public class Message {
     // Constructor vacío
     public Message() {}
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -53,11 +52,11 @@ public class Message {
         this.title = title;
     }
 
-    public byte[] getFileData() {
+    public String getFileData() {
         return fileData;
     }
 
-    public void setFileData(byte[] fileData) {
+    public void setFileData(String fileData) {
         this.fileData = fileData;
     }
 
