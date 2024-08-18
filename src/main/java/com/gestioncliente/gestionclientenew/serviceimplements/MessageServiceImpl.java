@@ -22,11 +22,6 @@ public class MessageServiceImpl implements IMessageService {
     }
 
     @Override
-    public List<Message> getMessagesByUser(Users user) {
-        return messageRepo.findByUser(user);
-    }
-
-    @Override
     public Message saveMessage(Message message) {
         return messageRepo.save(message);
     }
@@ -39,6 +34,11 @@ public class MessageServiceImpl implements IMessageService {
     @Override
     public Optional<Message> findById(Long id) {
         return messageRepo.findById(id);
+    }
+
+    @Override
+    public List<Message> findByUsername(String username) {
+        return messageRepo.findByUsername(username);
     }
 
 }

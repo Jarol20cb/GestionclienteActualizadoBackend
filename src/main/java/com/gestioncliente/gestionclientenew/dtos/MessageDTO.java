@@ -5,23 +5,10 @@ import java.time.LocalDateTime;
 public class MessageDTO {
 
     private Long id;
-    private Long userId;
+    private String username;
     private String title;
     private String fileData;
     private LocalDateTime createdAt;
-
-    // Constructor vacío
-    public MessageDTO() {}
-
-    // Constructor con parámetros
-
-    public MessageDTO(Long id, Long userId, String title, String fileData, LocalDateTime createdAt) {
-        this.id = id;
-        this.userId = userId;
-        this.title = title;
-        this.fileData = fileData;
-        this.createdAt = createdAt;
-    }
 
     public Long getId() {
         return id;
@@ -31,12 +18,12 @@ public class MessageDTO {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getTitle() {

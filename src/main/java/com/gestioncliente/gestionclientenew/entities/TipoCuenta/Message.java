@@ -12,9 +12,8 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private Users user;
+    @Column(name = "username", nullable = false)
+    private String username;
 
     @Column(length = 100, nullable = false)
     private String title;
@@ -25,8 +24,16 @@ public class Message {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    // Constructor vacío
-    public Message() {}
+    public Message() {
+    }
+
+    public Message(Long id, String username, String title, String fileData, LocalDateTime createdAt) {
+        this.id = id;
+        this.username = username;
+        this.title = title;
+        this.fileData = fileData;
+        this.createdAt = createdAt;
+    }
 
     public Long getId() {
         return id;
@@ -36,12 +43,12 @@ public class Message {
         this.id = id;
     }
 
-    public Users getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(Users user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getTitle() {
