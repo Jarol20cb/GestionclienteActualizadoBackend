@@ -3,6 +3,7 @@ package com.gestioncliente.gestionclientenew.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Notification {
@@ -18,6 +19,8 @@ public class Notification {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private Users user;
+
+    private LocalDateTime timestamp;
 
     // Getters y Setters
 
@@ -51,5 +54,18 @@ public class Notification {
 
     public void setUser(Users user) {
         this.user = user;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.timestamp = LocalDateTime.now();
     }
 }

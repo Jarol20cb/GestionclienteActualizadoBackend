@@ -177,6 +177,7 @@ public class AdminController {
                 notification.setMessage(notificationRequest.getMessage());
                 notification.setUser(user);
                 notification.setRead(false);
+                // No es necesario establecer el timestamp manualmente
                 notificationRepository.save(notification);
             }
         }
@@ -198,6 +199,7 @@ public class AdminController {
             notification.setMessage(message);
             notification.setUser(user);
             notification.setRead(false);
+            // No es necesario establecer el timestamp manualmente
             notificationRepository.save(notification);
         }
 
@@ -205,6 +207,7 @@ public class AdminController {
         response.put("message", "Notificaciones enviadas a todos los usuarios");
         return ResponseEntity.ok(response);
     }
+
 
     @GetMapping("/notifications")
     public ResponseEntity<?> getAllNotifications() {
