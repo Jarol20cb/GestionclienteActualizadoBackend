@@ -287,6 +287,12 @@ public class AdminController {
         // Guardar los cambios en el usuario
         userRepo.save(usuario);
 
+        Notification notification = new Notification();
+        notification.setMessage("Su pago ha sido Aceptado. Gracias por confiar en nosotros, disfruta de tus beneficios Premium \uD83D\uDE0A");
+        notification.setUser(usuario);
+        notification.setRead(false);
+        notificationRepository.save(notification);
+
         // Actualizar el estado del mensaje a ACEPTADO
         mensaje.setStatus(MessageStatus.ACCEPTED);
         messageService.saveMessage(mensaje);
