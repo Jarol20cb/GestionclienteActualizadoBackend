@@ -1,5 +1,7 @@
 package com.gestioncliente.gestionclientenew.dtos;
 
+import com.gestioncliente.gestionclientenew.entities.TipoCuenta.MessageStatus;
+
 import java.time.LocalDateTime;
 
 public class MessageDTO {
@@ -9,6 +11,9 @@ public class MessageDTO {
     private String title;
     private String fileData;
     private LocalDateTime createdAt;
+    private MessageStatus status; // Nuevo campo para el estado del mensaje
+
+    // Getters y Setters
 
     public Long getId() {
         return id;
@@ -48,5 +53,13 @@ public class MessageDTO {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public MessageStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MessageStatus status) {
+        this.status = status;
     }
 }

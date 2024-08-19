@@ -24,16 +24,23 @@ public class Message {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private MessageStatus status;
+
     public Message() {
     }
 
-    public Message(Long id, String username, String title, String fileData, LocalDateTime createdAt) {
+    public Message(Long id, String username, String title, String fileData, LocalDateTime createdAt, MessageStatus status) {
         this.id = id;
         this.username = username;
         this.title = title;
         this.fileData = fileData;
         this.createdAt = createdAt;
+        this.status = status;
     }
+
+    // Getters y Setters
 
     public Long getId() {
         return id;
@@ -73,5 +80,13 @@ public class Message {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public MessageStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MessageStatus status) {
+        this.status = status;
     }
 }

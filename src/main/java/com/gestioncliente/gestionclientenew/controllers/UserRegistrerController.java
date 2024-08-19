@@ -65,7 +65,7 @@ public class UserRegistrerController {
                 newUser.setSubscriptionEndDate(LocalDateTime.now().plusDays(15));  // Free por 15 días
                 newUser.setIsPremium(false);
             } else if (accountType == AccountType.PREMIUM) {
-                newUser.setSubscriptionEndDate(LocalDateTime.now().plusDays(30));  // Premium por 30 días
+                newUser.setSubscriptionEndDate(LocalDateTime.now().plusDays(1));  // Premium por 30 días
                 newUser.setIsPremium(true);
             }
 

@@ -1,11 +1,19 @@
 package com.gestioncliente.gestionclientenew.controllers.Administracion;
 
+import com.gestioncliente.gestionclientenew.dtos.MessageDTO;
 import com.gestioncliente.gestionclientenew.entities.*;
+import com.gestioncliente.gestionclientenew.entities.TipoCuenta.AccountType;
+import com.gestioncliente.gestionclientenew.entities.TipoCuenta.Message;
+import com.gestioncliente.gestionclientenew.entities.TipoCuenta.MessageStatus;
 import com.gestioncliente.gestionclientenew.repositories.*;
 import com.gestioncliente.gestionclientenew.serviceimplements.JwtUserDetailsService;
 import com.gestioncliente.gestionclientenew.serviceimplements.PasswordService;
+import com.gestioncliente.gestionclientenew.serviceinterfaces.IMessageService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +21,14 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+
+    @Autowired
+    private IMessageService messageService;
 
     @Autowired
     private IUsersRepository userRepo;
@@ -226,4 +238,97 @@ public class AdminController {
         notificationRepository.deleteAll();
         return ResponseEntity.ok("Todas las notificaciones han sido eliminadas");
     }
+
+
+    //Metodos de administracion de usuarios y pagos
+
+    @GetMapping("/pagos-pendientes")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public List<MessageDTO> Listar(){
+        return messageService.getAllMessages().stream().map(x->{
+            ModelMapper m = new ModelMapper();
+            return m.map(x, MessageDTO.class);
+        }).collect(Collectors.toList());
+    }
+
+    @PutMapping("/pagos/{id}/aceptar")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<String> aceptarPago(@PathVariable Long id) {
+        Message mensaje = messageService.getAllMessages().stream()
+                .filter(msg -> msg.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (mensaje == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pago no encontrado");
+        }
+
+        Users usuario = userRepo.findByUsername(mensaje.getUsername());
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        }
+
+        // Establecer la fecha y hora actuales
+        LocalDateTime now = LocalDateTime.now();
+
+        if (usuario.getAccountType() == AccountType.FREE) {
+            // Si el usuario es Free, actualizar las fechas de suscripción y pasarlo a Premium
+            usuario.setSubscriptionStartDate(now);
+            usuario.setSubscriptionEndDate(now.plusDays(30));
+            usuario.setIsPremium(true);
+            usuario.setAccountType(AccountType.PREMIUM);
+            usuario.setLastPaymentDate(now);
+        } else if (usuario.getAccountType() == AccountType.PREMIUM) {
+            // Si el usuario ya es Premium, extender su suscripción
+            usuario.setSubscriptionEndDate(usuario.getSubscriptionEndDate().plusDays(30));
+            usuario.setLastPaymentDate(now);
+        }
+
+        // Guardar los cambios en el usuario
+        userRepo.save(usuario);
+
+        // Actualizar el estado del mensaje a ACEPTADO
+        mensaje.setStatus(MessageStatus.ACCEPTED);
+        messageService.saveMessage(mensaje);
+
+        return ResponseEntity.ok("Pago aceptado y suscripción actualizada");
+    }
+
+    @PutMapping("/pagos/{id}/rechazar")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<String> rechazarPago(@PathVariable Long id) {
+        Message mensaje = messageService.getAllMessages().stream()
+                .filter(msg -> msg.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (mensaje == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pago no encontrado");
+        }
+
+        Users usuario = userRepo.findByUsername(mensaje.getUsername());
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        }
+
+        // Borrar el lastPaymentDate si el pago es rechazado (solo aplica a usuarios Free)
+        if (usuario.getAccountType() == AccountType.FREE) {
+            usuario.setLastPaymentDate(null);
+            userRepo.save(usuario);
+        }
+
+        // Notificar al usuario del rechazo
+        Notification notification = new Notification();
+        notification.setMessage("Su pago ha sido rechazado. Por favor, intente nuevamente o contacte a soporte.");
+        notification.setUser(usuario);
+        notification.setRead(false);
+        notificationRepository.save(notification);
+
+        // Actualizar el estado del mensaje a RECHAZADO
+        mensaje.setStatus(MessageStatus.REJECTED);
+        messageService.saveMessage(mensaje);
+
+        return ResponseEntity.ok("Pago rechazado y notificación enviada");
+    }
+
 }

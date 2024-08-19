@@ -1,7 +1,9 @@
 package com.gestioncliente.gestionclientenew.controllers.Administracion;
 
 import com.gestioncliente.gestionclientenew.dtos.MessageDTO;
+import com.gestioncliente.gestionclientenew.entities.TipoCuenta.AccountType;
 import com.gestioncliente.gestionclientenew.entities.TipoCuenta.Message;
+import com.gestioncliente.gestionclientenew.entities.TipoCuenta.MessageStatus;
 import com.gestioncliente.gestionclientenew.entities.Users;
 import com.gestioncliente.gestionclientenew.repositories.IUsersRepository;
 import com.gestioncliente.gestionclientenew.serviceinterfaces.IMessageService;
@@ -13,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,10 +47,27 @@ public class MessageController {
     public void registrar(@RequestBody MessageDTO dto) {
         ModelMapper m = new ModelMapper();
         Message p = m.map(dto, Message.class);
+
+        // Establecer el estado como PENDIENTE
+        p.setStatus(MessageStatus.PENDING);
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = ((UserDetails) authentication.getPrincipal()).getUsername();
         p.setUsername(username);
+
+        // Guardar el mensaje
         messageService.saveMessage(p);
+
+        // Obtener el usuario actual
+        Users usuario = userRepository.findByUsername(username);
+        if (usuario.getAccountType() == AccountType.FREE) {
+            LocalDateTime now = LocalDateTime.now();
+            usuario.setLastPaymentDate(now);
+            usuario.setIsPremium(true);
+            usuario.setAccountType(AccountType.PREMIUM);
+            usuario.setSubscriptionEndDate(now.plusHours(24));
+            userRepository.save(usuario);
+        }
     }
 
 
