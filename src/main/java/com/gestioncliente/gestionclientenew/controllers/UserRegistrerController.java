@@ -6,6 +6,7 @@ import com.gestioncliente.gestionclientenew.entities.Users;
 import com.gestioncliente.gestionclientenew.repositories.IRolRepository;
 import com.gestioncliente.gestionclientenew.repositories.IUsersRepository;
 import com.gestioncliente.gestionclientenew.security.RegistrationRequest;
+import com.gestioncliente.gestionclientenew.jobs.TelegramService; // Asegúrate de que esta importación sea correcta
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-//Controlador para insertar registro de usuario con sus roles, requiere del archivo RegistrationRequest
-//y una pequeña modificadión en la carpeta WebSecurityConfig
 
-//y para registrar en el Postman es de esta manera:
-//{
-//    "username": "jose",
-//    "password": "jose",
-//    "roles": ["CARPENTER"]
-//}
 @RestController
 @CrossOrigin
 public class UserRegistrerController {
@@ -38,6 +31,9 @@ public class UserRegistrerController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private TelegramService telegramService;  // Inyectar el servicio de Telegram
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody RegistrationRequest registrationRequest) {
@@ -61,12 +57,29 @@ public class UserRegistrerController {
             newUser.setCreatedAt(LocalDateTime.now());
             newUser.setSubscriptionStartDate(LocalDateTime.now());
 
+            String telegramMessage = "";
+
             if (accountType == AccountType.FREE) {
                 newUser.setSubscriptionEndDate(LocalDateTime.now().plusDays(15));  // Free por 15 días
                 newUser.setIsPremium(false);
+
+                // Crear mensaje para usuarios FREE
+                telegramMessage = "Nuevo usuario registrado: \n"
+                        + "Nombre: " + newUser.getName() + "\n"
+                        + "Nombre de usuario: " + newUser.getUsername() + "\n"
+                        + "Empresa: " + newUser.getCompanyName() + "\n"
+                        + "Tipo de cuenta: FREE\n";
+
             } else if (accountType == AccountType.PREMIUM) {
-                newUser.setSubscriptionEndDate(LocalDateTime.now().plusDays(1));  // Premium por 30 días
+                newUser.setSubscriptionEndDate(LocalDateTime.now().plusDays(1));  // Premium por 1 día
                 newUser.setIsPremium(true);
+
+                // Crear mensaje para usuarios PREMIUM
+                telegramMessage = "Atención, un usuario se ha registrado como PREMIUM: \n"
+                        + "Nombre: " + newUser.getName() + "\n"
+                        + "Nombre de usuario: " + newUser.getUsername() + "\n"
+                        + "Empresa: " + newUser.getCompanyName() + "\n"
+                        + "Revisa la administración para confirmar sus pagos.";
             }
 
             // Guardar usuario en la base de datos
@@ -79,6 +92,9 @@ public class UserRegistrerController {
                 newRole.setUser(newUser);
                 roleRepo.save(newRole);
             }
+
+            // Enviar el mensaje de Telegram
+            telegramService.sendTelegramMessage(telegramMessage);
 
             return ResponseEntity.ok(Map.of("message", "Usuario registrado con éxito :)"));
         } catch (Exception e) {

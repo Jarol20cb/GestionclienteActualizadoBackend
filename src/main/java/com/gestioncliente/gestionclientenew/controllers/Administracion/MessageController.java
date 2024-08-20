@@ -5,6 +5,7 @@ import com.gestioncliente.gestionclientenew.entities.TipoCuenta.AccountType;
 import com.gestioncliente.gestionclientenew.entities.TipoCuenta.Message;
 import com.gestioncliente.gestionclientenew.entities.TipoCuenta.MessageStatus;
 import com.gestioncliente.gestionclientenew.entities.Users;
+import com.gestioncliente.gestionclientenew.jobs.TelegramService;
 import com.gestioncliente.gestionclientenew.repositories.IUsersRepository;
 import com.gestioncliente.gestionclientenew.serviceinterfaces.IMessageService;
 import org.modelmapper.ModelMapper;
@@ -42,6 +43,9 @@ public class MessageController {
         }).collect(Collectors.toList());
     }
 
+    @Autowired
+    private TelegramService telegramService;
+
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public void registrar(@RequestBody MessageDTO dto) {
@@ -61,15 +65,19 @@ public class MessageController {
         // Obtener el usuario actual
         Users usuario = userRepository.findByUsername(username);
         if (usuario.getAccountType() == AccountType.FREE) {
-            LocalDateTime now = LocalDateTime.now();
-            usuario.setLastPaymentDate(now);
+            // Aquí marcamos que el usuario ha solicitado ser Premium
             usuario.setIsPremium(true);
             usuario.setAccountType(AccountType.PREMIUM);
-            usuario.setSubscriptionEndDate(now.plusHours(24));
+            usuario.setSubscriptionEndDate(LocalDateTime.now().plusHours(24));
+            // Guardar sin establecer la fecha de pago aún
             userRepository.save(usuario);
         }
-    }
 
+        // Enviar una notificación de Telegram
+        telegramService.sendTelegramMessage(
+                "El usuario " + username + " ha enviado un voucher y su cuenta ha sido actualizada a PREMIUM."
+        );
+    }
 
 
     // Eliminar un registro (solo para admin)
