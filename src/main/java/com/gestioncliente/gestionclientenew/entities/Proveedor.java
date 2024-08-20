@@ -15,9 +15,6 @@ public class Proveedor {
     @Column(name = "username", nullable = false)
     private String username;
 
-    // Otros campos relevantes
-    // Getters y setters
-
     public Proveedor() {
     }
 

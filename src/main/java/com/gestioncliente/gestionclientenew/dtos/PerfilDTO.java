@@ -17,9 +17,6 @@ public class PerfilDTO {
     private int usuariosActuales;
     private int usuariosDisponibles;
 
-    // Getters y Setters
-
-
     public int getPerfilId() {
         return perfilId;
     }

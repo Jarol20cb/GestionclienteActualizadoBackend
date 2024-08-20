@@ -17,8 +17,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-//@Profile(value = {"development", "production"})
-//Clase S7
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -60,7 +58,7 @@ public class WebSecurityConfig {
                 .antMatchers("/authenticate", "/register", "/messages/uploadReceipt").permitAll()
                 .antMatchers("/user/details").authenticated()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/notifications/**").authenticated() // Permitir acceso autenticado a notificaciones
+                .antMatchers("/notifications/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

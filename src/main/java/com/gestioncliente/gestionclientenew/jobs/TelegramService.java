@@ -11,19 +11,16 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class TelegramService {
 
-    // URL base de la API de Telegram
     private static final String TELEGRAM_API_URL = "https://api.telegram.org/bot7270700713:AAGbP1ieEBe4xPcdrUQjJO47hNqIQwFbQFY/sendMessage";
 
     public void sendTelegramMessage(String message) {
         RestTemplate restTemplate = new RestTemplate();
 
-        // Construir la URL completa usando UriComponentsBuilder
         String url = UriComponentsBuilder.fromHttpUrl(TELEGRAM_API_URL)
-                .queryParam("chat_id", "2096781666")  // Reemplaza con tu chat_id
-                .queryParam("text", message)           // Mensaje de texto
+                .queryParam("chat_id", "2096781666")
+                .queryParam("text", message)
                 .toUriString();
 
-        // Decodificar la URL para evitar la codificación de espacios
         try {
             String decodedUrl = URLDecoder.decode(url, StandardCharsets.UTF_8.name());
             restTemplate.getForObject(decodedUrl, String.class);

@@ -7,8 +7,6 @@ public class SocioCustomerServiceDTO {
     private String name;
     private List<CustomerServiceWithoutSocioDTO> customerServices;
 
-    // Getters y setters
-
     public int getSocioId() {
         return socioId;
     }

@@ -4,8 +4,6 @@ public class ProveedorDTO {
     private int proveedorId;
     private String nombre;
 
-    // Getters y Setters
-
     public int getProveedorId() {
         return proveedorId;
     }

@@ -17,7 +17,6 @@ public class UserWithoutPasswordDTO {
     private Long timeUntilNextPayment;
     private List<String> roles;
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }

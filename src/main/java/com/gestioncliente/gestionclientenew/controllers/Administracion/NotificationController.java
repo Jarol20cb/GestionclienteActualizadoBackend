@@ -43,25 +43,19 @@ public class NotificationController {
 
     @PostMapping("/user/current/mark-all-read")
     public ResponseEntity<Void> markAllNotificationsAsRead(Principal principal) {
-        // Obtener el usuario autenticado basado en el username del principal
         Users user = userRepo.findByUsername(principal.getName());
         if (user == null) {
             return ResponseEntity.status(404).body(null);
         }
-
-        // Buscar notificaciones usando el userId en lugar del username
         List<Notification> notifications = notificationRepository.findByUserIdAndReadFalse(user.getId());
 
         if (notifications.isEmpty()) {
-            return ResponseEntity.noContent().build(); // 204 No Content si no hay notificaciones por marcar
+            return ResponseEntity.noContent().build();
         }
 
-        // Marcar todas las notificaciones como leídas
         for (Notification notification : notifications) {
             notification.setRead(true);
         }
-
-        // Guardar las notificaciones actualizadas
         notificationRepository.saveAll(notifications);
 
         return ResponseEntity.ok().build();

@@ -15,50 +15,47 @@ public class Users {
     private Long id;
 
     @Column(length = 30, unique = true, nullable = false)
-    private String username;  // Nombre de usuario único
+    private String username;
 
     @Column(length = 200, nullable = false)
-    private String password;  // Contraseña cifrada del usuario
+    private String password;
 
-    private Boolean enabled;  // Estado de habilitación de la cuenta (activo/inactivo)
+    private Boolean enabled;
 
     @Column(length = 50, nullable = false)
-    private String name;  // Nombre completo del usuario
+    private String name;
 
     @Column(length = 100, nullable = false)
-    private String companyName;  // Nombre de la empresa asociada al usuario
+    private String companyName;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;  // Fecha y hora de creación de la cuenta
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime subscriptionStartDate;  // Fecha de inicio de la suscripción (free o premium)
-
+    private LocalDateTime subscriptionStartDate;
     @Column(nullable = false)
-    private LocalDateTime subscriptionEndDate;  // Fecha de expiración de la suscripción
+    private LocalDateTime subscriptionEndDate;
 
     @Column(nullable = true)
-    private LocalDateTime lastPaymentDate;  // Fecha del último pago realizado (solo para usuarios premium)
+    private LocalDateTime lastPaymentDate;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
-    private AccountType accountType;  // Tipo de cuenta: "FREE" o "PREMIUM"
+    private AccountType accountType;
 
     @Column(nullable = false)
-    private Boolean isPremium;  // Indica si la cuenta es premium (true/false)
+    private Boolean isPremium;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Role> roles;  // Lista de roles asociados al usuario (e.g., ADMIN, USER)
+    private List<Role> roles;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Notification> notifications;  // Notificaciones asociadas al usuario
+    private List<Notification> notifications;
 
-    // Constructor vacío
     public Users() {
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }

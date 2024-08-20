@@ -12,7 +12,6 @@ public class CustomerServiceWithoutSocioDTO {
     private Date fechafin;
     private String estado;
 
-    // Getters y Setters
 
     public int getIdcs() {
         return idcs;

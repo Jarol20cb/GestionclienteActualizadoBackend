@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-//Clase 2
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 

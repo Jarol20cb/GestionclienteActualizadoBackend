@@ -11,9 +11,7 @@ public class MessageDTO {
     private String title;
     private String fileData;
     private LocalDateTime createdAt;
-    private MessageStatus status; // Nuevo campo para el estado del mensaje
-
-    // Getters y Setters
+    private MessageStatus status;
 
     public Long getId() {
         return id;

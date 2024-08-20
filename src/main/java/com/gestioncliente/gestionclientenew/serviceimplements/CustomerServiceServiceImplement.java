@@ -24,10 +24,8 @@ public class CustomerServiceServiceImplement implements CustomerServiceService {
         Perfil perfil = perfilRepository.findById(cuser.getPerfil().getPerfilId()).orElseThrow(() -> new RuntimeException("Perfil no encontrado"));
 
         if (existingCustomerService != null) {
-            // Actualización de un registro existente
             Perfil oldPerfil = existingCustomerService.getPerfil();
             if (oldPerfil.getPerfilId() != perfil.getPerfilId()) {
-                // Si el perfil ha cambiado, ajustamos los contadores en ambos perfiles
                 oldPerfil.setUsuariosActuales(oldPerfil.getUsuariosActuales() - 1);
                 oldPerfil.setUsuariosDisponibles(oldPerfil.getLimiteUsuarios() - oldPerfil.getUsuariosActuales());
                 perfilRepository.save(oldPerfil);
@@ -42,7 +40,6 @@ public class CustomerServiceServiceImplement implements CustomerServiceService {
             }
             cs.save(cuser);
         } else {
-            // Nuevo registro
             if (perfil.getUsuariosDisponibles() > 0) {
                 perfil.setUsuariosActuales(perfil.getUsuariosActuales() + 1);
                 perfil.setUsuariosDisponibles(perfil.getLimiteUsuarios() - perfil.getUsuariosActuales());

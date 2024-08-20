@@ -40,8 +40,6 @@ public class Message {
         this.status = status;
     }
 
-    // Getters y Setters
-
     public Long getId() {
         return id;
     }

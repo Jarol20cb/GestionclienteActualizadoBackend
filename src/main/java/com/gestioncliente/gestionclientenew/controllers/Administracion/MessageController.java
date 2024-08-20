@@ -51,36 +51,26 @@ public class MessageController {
     public void registrar(@RequestBody MessageDTO dto) {
         ModelMapper m = new ModelMapper();
         Message p = m.map(dto, Message.class);
-
-        // Establecer el estado como PENDIENTE
         p.setStatus(MessageStatus.PENDING);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = ((UserDetails) authentication.getPrincipal()).getUsername();
         p.setUsername(username);
-
-        // Guardar el mensaje
         messageService.saveMessage(p);
 
-        // Obtener el usuario actual
         Users usuario = userRepository.findByUsername(username);
         if (usuario.getAccountType() == AccountType.FREE) {
-            // Aquí marcamos que el usuario ha solicitado ser Premium
             usuario.setIsPremium(true);
             usuario.setAccountType(AccountType.PREMIUM);
             usuario.setSubscriptionEndDate(LocalDateTime.now().plusHours(24));
-            // Guardar sin establecer la fecha de pago aún
             userRepository.save(usuario);
         }
 
-        // Enviar una notificación de Telegram
         telegramService.sendTelegramMessage(
                 "El usuario " + username + " ha enviado un voucher y su cuenta ha sido actualizada a PREMIUM."
         );
     }
 
-
-    // Eliminar un registro (solo para admin)
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteMessage(@PathVariable Long id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

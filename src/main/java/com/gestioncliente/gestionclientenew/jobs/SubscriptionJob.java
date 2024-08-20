@@ -16,7 +16,7 @@ public class SubscriptionJob {
     @Autowired
     private IUsersRepository userRepo;
 
-    @Scheduled(cron = "0 0 * * * *")  // Ejecuta el job cada hora
+    @Scheduled(cron = "0 0 * * * *")
     public void checkSubscriptions() {
         System.out.println("Inicio de la revisión de suscripciones: " + LocalDateTime.now());
 
@@ -24,7 +24,6 @@ public class SubscriptionJob {
         LocalDateTime now = LocalDateTime.now();
 
         for (Users user : users) {
-            // Caso 1: Usuarios Premium Nuevos que no han pagado
             if (user.getAccountType() == AccountType.PREMIUM && user.getLastPaymentDate() == null) {
                 if (user.getCreatedAt().plusHours(24).isBefore(now)) {
                     user.setAccountType(AccountType.FREE);
@@ -36,7 +35,6 @@ public class SubscriptionJob {
                 }
             }
 
-            // Caso 2: Usuarios Free que actualizaron a Premium pero no han confirmado el pago
             else if (user.getAccountType() == AccountType.PREMIUM && user.getIsPremium() && user.getLastPaymentDate() == null) {
                 if (user.getSubscriptionStartDate().plusHours(24).isBefore(now) && user.getCreatedAt().plusDays(15).isAfter(now)) {
                     user.setAccountType(AccountType.FREE);
@@ -50,12 +48,6 @@ public class SubscriptionJob {
                 }
             }
 
-            // Caso 3: Usuarios Free que han expirado
-//            else if (user.getAccountType() == AccountType.FREE && user.getSubscriptionEndDate().isBefore(now)) {
-//                user.setEnabled(false);  // Desactiva la cuenta
-//                userRepo.save(user);
-//                System.out.println("Usuario " + user.getUsername() + " ha sido desactivado debido a expiración de su suscripción.");
-//            }
         }
 
         System.out.println("Fin de la revisión de suscripciones: " + LocalDateTime.now());

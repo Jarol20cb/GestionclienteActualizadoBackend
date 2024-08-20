@@ -6,7 +6,6 @@ class NotificationRequest {
     private String message;
     private List<Long> userIds;
 
-    // Getters y Setters
     public String getMessage() {
         return message;
     }

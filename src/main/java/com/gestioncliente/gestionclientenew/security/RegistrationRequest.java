@@ -8,9 +8,8 @@ public class RegistrationRequest extends JwtRequest {
     private List<String> roles;
     private String name;
     private String companyName;
-    private AccountType accountType;  // Tipo de cuenta seleccionado por el usuario
+    private AccountType accountType;
 
-    // Getters y Setters
     public List<String> getRoles() {
         return roles;
     }

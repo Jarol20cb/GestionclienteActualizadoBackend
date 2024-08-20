@@ -15,7 +15,7 @@ public class PerfilServiceImplement implements PerfilService {
 
     @Override
     public void insert(Perfil perfil) {
-        if (perfil.getPerfilId() == 0) { // Verificar si es un nuevo perfil
+        if (perfil.getPerfilId() == 0) {
             perfil.setUsuariosActuales(0);
             perfil.setUsuariosDisponibles(perfil.getLimiteUsuarios());
         }

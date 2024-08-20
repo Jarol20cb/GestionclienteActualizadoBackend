@@ -100,8 +100,6 @@ public class AdminController {
         if (user == null) {
             return ResponseEntity.status(404).body("Usuario no existe");
         }
-
-        // Eliminar registros asociados en orden adecuado
         rolRepository.deleteByUserId(user.getId());
         List<Services> services = servicesRepository.findByUsername(user.getUsername());
         for (Services service : services) {
@@ -120,7 +118,6 @@ public class AdminController {
             proveedorRepository.delete(proveedor);
         }
 
-        // Finalmente, eliminar el usuario
         userRepo.delete(user);
 
         return ResponseEntity.ok("User deleted successfully");
@@ -133,25 +130,20 @@ public class AdminController {
             return ResponseEntity.status(404).body("Usuario no existe");
         }
 
-        // Actualizar los campos del usuario
         user.setUsername(updatedUser.getUsername());
         user.setName(updatedUser.getName());
         user.setCompanyName(updatedUser.getCompanyName());
         user.setEnabled(updatedUser.getEnabled());
 
-        // Encriptar la contraseña si es diferente de la actual
         if (!passwordService.matches(updatedUser.getPassword(), user.getPassword())) {
             user.setPassword(passwordService.encodePassword(updatedUser.getPassword()));
         }
 
-        // Obtener roles actuales del usuario
         List<Role> currentRoles = user.getRoles();
         List<Role> newRoles = updatedUser.getRoles();
 
-        // Mantener solo los roles actualizados
         currentRoles.removeIf(role -> newRoles.stream().noneMatch(newRole -> newRole.getRol().equals(role.getRol())));
 
-        // Añadir nuevos roles si no existen
         for (Role newRole : newRoles) {
             if (currentRoles.stream().noneMatch(existingRole -> existingRole.getRol().equals(newRole.getRol()))) {
                 newRole.setUser(user);
@@ -162,7 +154,6 @@ public class AdminController {
         user.setRoles(currentRoles);
         userRepo.save(user);
 
-        // Refrescar la entidad para obtener los cambios más recientes
         Users refreshedUser = userRepo.findById(id).orElse(null);
 
         return ResponseEntity.ok(refreshedUser);
@@ -177,7 +168,6 @@ public class AdminController {
                 notification.setMessage(notificationRequest.getMessage());
                 notification.setUser(user);
                 notification.setRead(false);
-                // No es necesario establecer el timestamp manualmente
                 notificationRepository.save(notification);
             }
         }
@@ -199,7 +189,6 @@ public class AdminController {
             notification.setMessage(message);
             notification.setUser(user);
             notification.setRead(false);
-            // No es necesario establecer el timestamp manualmente
             notificationRepository.save(notification);
         }
 
@@ -212,7 +201,7 @@ public class AdminController {
     @GetMapping("/notifications")
     public ResponseEntity<?> getAllNotifications() {
         List<Notification> notifications = notificationRepository.findAll();
-        notifications.forEach(notification -> notification.getUser().getUsername()); // Cargar el nombre de usuario
+        notifications.forEach(notification -> notification.getUser().getUsername());
         return ResponseEntity.ok(notifications);
     }
 
@@ -243,8 +232,6 @@ public class AdminController {
     }
 
 
-    //Metodos de administracion de usuarios y pagos
-
     @GetMapping("/pagos-pendientes")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public List<MessageDTO> Listar(){
@@ -271,23 +258,19 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
         }
 
-        // Establecer la fecha y hora actuales
         LocalDateTime now = LocalDateTime.now();
 
         if (usuario.getAccountType() == AccountType.FREE) {
-            // Si el usuario es Free, actualizar las fechas de suscripción y pasarlo a Premium
             usuario.setSubscriptionStartDate(now);
             usuario.setSubscriptionEndDate(now.plusDays(30));
             usuario.setIsPremium(true);
             usuario.setAccountType(AccountType.PREMIUM);
             usuario.setLastPaymentDate(now);
         } else if (usuario.getAccountType() == AccountType.PREMIUM) {
-            // Si el usuario ya es Premium, extender su suscripción
             usuario.setSubscriptionEndDate(usuario.getSubscriptionEndDate().plusDays(30));
             usuario.setLastPaymentDate(now);
         }
 
-        // Guardar los cambios en el usuario
         userRepo.save(usuario);
 
         Notification notification = new Notification();
@@ -296,7 +279,6 @@ public class AdminController {
         notification.setRead(false);
         notificationRepository.save(notification);
 
-        // Actualizar el estado del mensaje a ACEPTADO
         mensaje.setStatus(MessageStatus.ACCEPTED);
         messageService.saveMessage(mensaje);
 
@@ -320,20 +302,17 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
         }
 
-        // Borrar el lastPaymentDate si el pago es rechazado (solo aplica a usuarios Free)
         if (usuario.getAccountType() == AccountType.FREE) {
             usuario.setLastPaymentDate(null);
             userRepo.save(usuario);
         }
 
-        // Notificar al usuario del rechazo
         Notification notification = new Notification();
         notification.setMessage("Su pago ha sido rechazado. Por favor, intente nuevamente o contacte a soporte.");
         notification.setUser(usuario);
         notification.setRead(false);
         notificationRepository.save(notification);
 
-        // Actualizar el estado del mensaje a RECHAZADO
         mensaje.setStatus(MessageStatus.REJECTED);
         messageService.saveMessage(mensaje);
 
