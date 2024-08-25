@@ -35,6 +35,7 @@ public class UserController {
         userDTO.setLastPaymentDate(user.getLastPaymentDate());
         userDTO.setSubscriptionStartDate(user.getSubscriptionStartDate());
         userDTO.setSubscriptionEndDate(user.getSubscriptionEndDate());
+        userDTO.setNumber(user.getNumber());
         List<String> roles = user.getRoles().stream().map(role -> role.getRol()).collect(Collectors.toList());
         userDTO.setRoles(roles);
 

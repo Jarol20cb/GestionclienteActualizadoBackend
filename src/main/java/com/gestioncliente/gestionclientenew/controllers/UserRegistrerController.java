@@ -51,6 +51,7 @@ public class UserRegistrerController {
             newUser.setAccountType(accountType);
             newUser.setCreatedAt(LocalDateTime.now());
             newUser.setSubscriptionStartDate(LocalDateTime.now());
+            newUser.setNumber(registrationRequest.getNumber());
 
             String telegramMessage = "";
 
@@ -62,6 +63,7 @@ public class UserRegistrerController {
                         + "Nombre: " + newUser.getName() + "\n"
                         + "Nombre de usuario: " + newUser.getUsername() + "\n"
                         + "Empresa: " + newUser.getCompanyName() + "\n"
+                        + "Contacto: " + newUser.getNumber() + "\n"
                         + "Tipo de cuenta: FREE\n";
 
             } else if (accountType == AccountType.PREMIUM) {
@@ -72,6 +74,7 @@ public class UserRegistrerController {
                         + "Nombre: " + newUser.getName() + "\n"
                         + "Nombre de usuario: " + newUser.getUsername() + "\n"
                         + "Empresa: " + newUser.getCompanyName() + "\n"
+                        + "Contacto: " + newUser.getNumber() + "\n"
                         + "Revisa la administración para confirmar sus pagos.";
             }
 

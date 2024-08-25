@@ -16,6 +16,7 @@ public class UserWithoutPasswordDTO {
     private LocalDateTime lastPaymentDate;
     private Long timeUntilNextPayment;
     private List<String> roles;
+    private String number;
 
     public Long getId() {
         return id;
@@ -111,5 +112,13 @@ public class UserWithoutPasswordDTO {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 }

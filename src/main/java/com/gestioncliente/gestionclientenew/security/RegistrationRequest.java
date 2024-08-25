@@ -8,6 +8,7 @@ public class RegistrationRequest extends JwtRequest {
     private List<String> roles;
     private String name;
     private String companyName;
+    private String number;
     private AccountType accountType;
 
     public List<String> getRoles() {
@@ -40,5 +41,13 @@ public class RegistrationRequest extends JwtRequest {
 
     public void setAccountType(AccountType accountType) {
         this.accountType = accountType;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 }

@@ -11,11 +11,11 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendPasswordResetEmail(String to, String token) {
+    public void sendPasswordResetEmail(String to, String code) {
         try {
             String subject = "Recuperación de Contraseña";
-            String text = "Para restablecer tu contraseña, haz clic en el siguiente enlace: " +
-                    "http://localhost:4200/reset-password?token=" + token;
+            String text = "Tu código de verificación para restablecer la contraseña es: " + code + "\n\n" +
+                    "Este código es válido por 10 minutos.";
 
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(to);

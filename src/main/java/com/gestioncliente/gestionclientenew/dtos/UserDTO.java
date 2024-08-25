@@ -8,6 +8,7 @@ import java.util.List;
 public class UserDTO {
     private String username;
     private String name;
+    private String number;
     private String companyName;
     private List<String> roles;
     private AccountType accountType;
@@ -96,5 +97,13 @@ public class UserDTO {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 }

@@ -21,5 +21,5 @@ public interface IUsersRepository extends JpaRepository<Users, Long> {
     @Query(value = "insert into roles (rol, user_id) VALUES (:rol, :user_id)", nativeQuery = true)
     void insRol(@Param("rol") String authority, @Param("user_id") Long user_id);
 
-    Users findByResetPasswordToken(String token);
+    Users findByResetPasswordCode(String code);
 }

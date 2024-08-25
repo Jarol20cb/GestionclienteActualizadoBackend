@@ -14,7 +14,7 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 30, unique = true, nullable = false)
+    @Column(length = 50, unique = true, nullable = false)
     private String username;
 
     @Column(length = 200, nullable = false)
@@ -25,6 +25,9 @@ public class Users {
     @Column(length = 50, nullable = false)
     private String name;
 
+    @Column(length = 50, nullable = false)
+    private String number;
+
     @Column(length = 100, nullable = false)
     private String companyName;
 
@@ -33,6 +36,7 @@ public class Users {
 
     @Column(nullable = false)
     private LocalDateTime subscriptionStartDate;
+
     @Column(nullable = false)
     private LocalDateTime subscriptionEndDate;
 
@@ -54,37 +58,12 @@ public class Users {
     private List<Notification> notifications;
 
     @Column(nullable = true)
-    private String resetPasswordToken;
+    private String resetPasswordCode;
 
     @Column(nullable = true)
-    private LocalDateTime resetPasswordTokenExpiration;
+    private LocalDateTime resetPasswordCodeExpiration;
 
     public Users() {
-    }
-
-
-    public Boolean getPremium() {
-        return isPremium;
-    }
-
-    public void setPremium(Boolean premium) {
-        isPremium = premium;
-    }
-
-    public String getResetPasswordToken() {
-        return resetPasswordToken;
-    }
-
-    public void setResetPasswordToken(String resetPasswordToken) {
-        this.resetPasswordToken = resetPasswordToken;
-    }
-
-    public LocalDateTime getResetPasswordTokenExpiration() {
-        return resetPasswordTokenExpiration;
-    }
-
-    public void setResetPasswordTokenExpiration(LocalDateTime resetPasswordTokenExpiration) {
-        this.resetPasswordTokenExpiration = resetPasswordTokenExpiration;
     }
 
     public Long getId() {
@@ -203,5 +182,29 @@ public class Users {
         for (Notification notification : notifications) {
             notification.setUser(this);
         }
+    }
+
+    public String getResetPasswordCode() {
+        return resetPasswordCode;
+    }
+
+    public void setResetPasswordCode(String resetPasswordCode) {
+        this.resetPasswordCode = resetPasswordCode;
+    }
+
+    public LocalDateTime getResetPasswordCodeExpiration() {
+        return resetPasswordCodeExpiration;
+    }
+
+    public void setResetPasswordCodeExpiration(LocalDateTime resetPasswordCodeExpiration) {
+        this.resetPasswordCodeExpiration = resetPasswordCodeExpiration;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 }
