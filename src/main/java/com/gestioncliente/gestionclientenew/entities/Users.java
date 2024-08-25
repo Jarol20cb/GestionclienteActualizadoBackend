@@ -53,7 +53,38 @@ public class Users {
     @JsonManagedReference
     private List<Notification> notifications;
 
+    @Column(nullable = true)
+    private String resetPasswordToken;
+
+    @Column(nullable = true)
+    private LocalDateTime resetPasswordTokenExpiration;
+
     public Users() {
+    }
+
+
+    public Boolean getPremium() {
+        return isPremium;
+    }
+
+    public void setPremium(Boolean premium) {
+        isPremium = premium;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
+    }
+
+    public LocalDateTime getResetPasswordTokenExpiration() {
+        return resetPasswordTokenExpiration;
+    }
+
+    public void setResetPasswordTokenExpiration(LocalDateTime resetPasswordTokenExpiration) {
+        this.resetPasswordTokenExpiration = resetPasswordTokenExpiration;
     }
 
     public Long getId() {

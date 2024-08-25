@@ -55,7 +55,7 @@ public class WebSecurityConfig {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate", "/register", "/messages/uploadReceipt").permitAll()
+                .antMatchers("/authenticate", "/register", "/messages/uploadReceipt", "/request-password-reset", "/reset-password").permitAll()
                 .antMatchers("/user/details").authenticated()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/notifications/**").authenticated()
